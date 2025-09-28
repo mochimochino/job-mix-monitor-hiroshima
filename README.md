@@ -1,6 +1,7 @@
 ### Job Mix Monitor
 
 **Purpose:**
+広島サイト用にUSをベースに改良を行う。
 Monitor the mix of jobs types(_sim_, _train_, _reco_, _other_) running on one or more identified grid sites, tabulate average usage for _rss_ and _vmem_.
 
 #### Implementation
