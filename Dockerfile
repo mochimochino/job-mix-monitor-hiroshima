@@ -1,18 +1,24 @@
-FROM almalinux:9
+FROM almalinux:8
 
-RUN dnf -y install epel-release && \
-    dnf -y install java-11-openjdk-devel python3 python3-pip git wget && \
-    dnf clean all
+RUN dnf install -y \
+    git \
+    java-11-openjdk-devel \
+    python2 \
+    wget \
+    && dnf clean all
 
-WORKDIR /opt/job-mix-monitor
+ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk
 
-COPY . .
+WORKDIR /app
+
+RUN git clone https://github.com/mochimochino/job-mix-monitor-hiroshima.git .
+
+RUN chmod +x ./update_mlclient.sh ./bin/recompile.sh ./run_client.sh ./scripts/eval_jobmix.py
 
 RUN echo "/usr/lib/jvm/java-11-openjdk" > conf/env.JAVA_HOME
 
-RUN chmod +x update_mlclient.sh && ./update_mlclient.sh
+RUN ./update_mlclient.sh
 
-RUN chmod +x bin/recompile.sh && cd bin && ./recompile.sh
+RUN cd bin && ./recompile.sh
 
-CMD ["./run_client.sh", "mysite", "output.txt"]
-
+CMD ["/bin/bash"]
